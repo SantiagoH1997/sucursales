@@ -1,0 +1,20 @@
+version: '3.3'
+services:
+  api:
+    container_name: 'sucursales'
+    build: '.'
+    ports:
+      - '8080:8080'
+    environment:
+      - DB_HOST=mongo
+      - DB_PORT=27017
+      - DB_NAME=challenge
+    depends_on:
+      - 'mongo'
+    links:
+      - mongo
+  mongo:
+    image: 'mongo:latest'
+    container_name: 'mongo'
+    ports:
+      - '27100:27017'
