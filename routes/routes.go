@@ -1,10 +1,12 @@
 package routes
 
 import (
+	"encoding/json"
 	"net/http"
 
 	"github.com/gorilla/mux"
 	"github.com/santiagoh1997/challenge/controllers"
+	"github.com/santiagoh1997/challenge/utils/apierrors"
 )
 
 // MapURLs mapea cada endpoint con la función correspondiente en el controlador
@@ -33,4 +35,12 @@ func MapURLs(r *mux.Router, sc controllers.SucursalController) {
 	// 	201: sucursal
 	// 	400: badRequestErrorWithFields
 	r.HandleFunc("/sucursales", sc.Create).Methods(http.MethodPost)
+
+	// NotFound Handler
+	r.NotFoundHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		err := apierrors.NewNotFound("Endpoint no encontrado")
+		w.Header().Add("Content-Type", "application/json")
+		w.WriteHeader(err.StatusCode())
+		json.NewEncoder(w).Encode(err.Parse())
+	})
 }
