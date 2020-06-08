@@ -38,7 +38,7 @@ La documentacion swagger se puede encontrar en http://localhost:8080/docs
 
 - Crear Sucursal.
 - Buscar Sucursal por ID.
-- Buscar Sucursal más cercana a un punto.
+- Buscar Sucursal más cercana a un punto (máximo 20km).
 
 
 ### Crear Sucursal
