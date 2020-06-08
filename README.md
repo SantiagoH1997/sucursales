@@ -47,7 +47,7 @@ La documentacion swagger se puede encontrar en http://localhost:8080/docs
 
 Ejemplo de request body:
 
-```json
+```jsonc
 {
 	"direccion": "Pres. Juan Domingo Perón 4739", //string
 	"latitud": -34.7625601, //float
@@ -57,7 +57,7 @@ Ejemplo de request body:
 
 Ejemplo de response (status code 201):
 
-```json
+```jsonc
 {
 	"id": "5edb503e14e865fa8ac0cf4b", //string
 	"direccion": "Pres. Juan Domingo Perón 4739", //string
@@ -79,7 +79,7 @@ GET /sucursales?lat=-34.7625601&lon=-58.2192142
 
 Ejemplo de response (status code 200):
 
-```json
+```jsonc
 {
 	"id": "5edb503e14e865fa8ac0cf4b", //string
 	"direccion": "Pres. Juan Domingo Perón 4739", //string
@@ -100,7 +100,7 @@ GET /sucursales/5edb503e14e865fa8ac0cf4b
 
 Ejemplo de response (status code 200):
 
-```json
+```jsonc
 {
 	"id": "5edb503e14e865fa8ac0cf4b", //string
 	"direccion": "Pres. Juan Domingo Perón 4739", //string
