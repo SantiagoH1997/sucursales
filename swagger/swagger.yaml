@@ -1,0 +1,211 @@
+basePath: /
+consumes:
+- application/json
+definitions:
+  createSucursal:
+    properties:
+      direccion:
+        description: Dirección de la sucursal
+        example: Pres. Juan Domingo Perón 4739
+        type: string
+        x-go-name: Direccion
+      latitud:
+        description: Latitud de la sucursal
+        example: -34.7625601
+        format: double
+        type: number
+        x-go-name: Latitud
+      longitud:
+        description: Longitud de la sucursal
+        example: -58.2192142
+        format: double
+        type: number
+        x-go-name: Longitud
+    required:
+    - direccion
+    - latitud
+    - longitud
+    type: object
+    x-go-package: github.com/santiagoh1997/challenge/doc
+  errorField:
+    properties:
+      error:
+        description: Mensaje del error en el campo
+        type: string
+        x-go-name: Error
+      field:
+        description: Campo donde sucede el error (en caso de ser necesario)
+        type: string
+        x-go-name: Field
+    type: object
+    x-go-package: github.com/santiagoh1997/challenge/doc
+  sucursal:
+    description: Sucursal
+    properties:
+      direccion:
+        description: Dirección de la sucursal
+        example: Pres. Juan Domingo Perón 4739
+        type: string
+        x-go-name: Direccion
+      id:
+        description: ID de la sucursal
+        example: 5edb503e14e865fa8ac0cf4b
+        type: string
+        x-go-name: ID
+      latitud:
+        description: Latitud de la sucursal
+        example: -34.7625601
+        format: double
+        type: number
+        x-go-name: Latitud
+      longitud:
+        description: Longitud de la sucursal
+        example: -58.2192142
+        format: double
+        type: number
+        x-go-name: Longitud
+    type: object
+    x-go-package: github.com/santiagoh1997/challenge/doc
+host: localhost:8080
+info:
+  description: Permite crear sucursales, buscar sucursales por id o por cercanía
+  license:
+    name: MIT
+    url: http://opensource.org/licenses/MIT
+  title: API Sucursales.
+  version: 1.0.0
+paths:
+  /sucursales:
+    get:
+      description: Toma una latitud y una longitud, devuelve la sucursal más cercana
+        a ese punto
+      operationId: getNearest
+      parameters:
+      - description: lat
+        example: "-34.7625601"
+        format: double
+        in: query
+        maximum: 90
+        minimum: -90
+        name: lat
+        required: true
+        type: number
+        x-go-name: Lat
+      - description: lon
+        example: "-58.2192142"
+        format: double
+        in: query
+        maximum: 180
+        minimum: -180
+        name: lon
+        required: true
+        type: number
+        x-go-name: Lon
+      responses:
+        "200":
+          description: sucursal
+          schema:
+            $ref: '#/definitions/sucursal'
+        "400":
+          $ref: '#/responses/badRequestErrorGeneric'
+        "404":
+          $ref: '#/responses/notFoundError'
+      tags:
+      - sucursal
+    post:
+      description: Crea una sucursal en la base de datos
+      operationId: createSucursal
+      parameters:
+      - in: body
+        name: sucursal
+        schema:
+          $ref: '#/definitions/createSucursal'
+          type: object
+        type: object
+      responses:
+        "201":
+          description: sucursal
+          schema:
+            $ref: '#/definitions/sucursal'
+        "400":
+          $ref: '#/responses/badRequestErrorWithFields'
+      tags:
+      - sucursal
+  /sucursales/:idSucursal:
+    get:
+      description: Devuelve una sucursal dado un id
+      operationId: getByID
+      parameters:
+      - description: id
+        example: 5edb503e14e865fa8ac0cf4b
+        in: path
+        name: id
+        required: true
+        type: string
+        x-go-name: ID
+      responses:
+        "200":
+          description: sucursal
+          schema:
+            $ref: '#/definitions/sucursal'
+        "400":
+          $ref: '#/responses/badRequestErrorID'
+        "404":
+          $ref: '#/responses/notFoundError'
+      tags:
+      - sucursal
+produces:
+- application/json
+responses:
+  badRequestErrorGeneric:
+    description: badRequestError
+    headers:
+      message:
+        description: Mensaje del error
+        example: La latitud debe ser un número entre -90 y 90
+        type: string
+      status_code:
+        description: "400"
+        format: int64
+        type: integer
+  badRequestErrorID:
+    description: badRequestError
+    headers:
+      message:
+        description: Mensaje del error
+        example: El id no es válido
+        type: string
+      status_code:
+        description: "400"
+        format: int64
+        type: integer
+  badRequestErrorWithFields:
+    description: badRequestError
+    headers:
+      fields:
+        description: Campos donde sucede el error (en caso de ser necesario)
+        items:
+          $ref: '#/definitions/errorField'
+        type: array
+      message:
+        description: Mensaje del error
+        example: La latitud debe ser un número entre -90 y 90
+        type: string
+      status_code:
+        description: "400"
+        format: int64
+        type: integer
+  notFoundError:
+    description: notFoundError
+    headers:
+      message:
+        description: Mensaje del error
+        example: No se encontró la sucursal
+        type: string
+      status_code:
+        description: "404"
+        format: int64
+        type: integer
+schemes:
+- http
+swagger: "2.0"

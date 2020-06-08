@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 
+	docsMiddleware "github.com/go-openapi/runtime/middleware"
 	"github.com/gorilla/mux"
 	"github.com/santiagoh1997/challenge/controllers"
 	"github.com/santiagoh1997/challenge/datasources/db"
@@ -48,6 +49,13 @@ func main() {
 	// Middleware
 	r.Use(middleware.Logging(l))
 	r.Use(middleware.ContentTypeJSON)
+	// Swagger docs
+	if os.Getenv("ENV") == "dev" {
+		opts := docsMiddleware.RedocOpts{SpecURL: "/swagger/swagger.yaml"}
+		sh := docsMiddleware.Redoc(opts, nil)
+		r.Handle("/docs", sh)
+		r.Handle("/swagger/swagger.yaml", http.FileServer(http.Dir("./")))
+	}
 
 	l.Fatal(http.ListenAndServe(":8080", r))
 }

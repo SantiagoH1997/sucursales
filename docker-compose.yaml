@@ -9,6 +9,7 @@ services:
       - DB_HOST=mongo
       - DB_PORT=27017
       - DB_NAME=challenge
+      - ENV=dev
     depends_on:
       - 'mongo'
     links:

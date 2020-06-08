@@ -1,0 +1,1 @@
+go build -o sucursales && DB_HOST=localhost DB_NAME=challenge DB_PORT=27017 ENV=dev ./sucursales
